@@ -1,0 +1,10 @@
+{
+  "name": "Why Is It Always Shifting!!!",
+  "description": "Helps find the root cause of shifting bugs by highlighting divs in devtools where `clientHeight !== scrollHeight` and `overflow: hidden`.",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "dist/index.html",
+    "default_icon": "why-is-it-always-shifting.png"
+  }
+}
