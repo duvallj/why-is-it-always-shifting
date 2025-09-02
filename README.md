@@ -1,5 +1,7 @@
 # Why Is It Always Shifting!!!
 
+![cat screaming at a shifted HTML page](public/why-is-it-always-shifting.png)
+
 A simple extension to see what elements have `overflow: hidden` with
 `scrollHeight !== clientHeight`, because those can still shift if an element
 inside them becomes focused or is otherwise scrolled to automatically.
