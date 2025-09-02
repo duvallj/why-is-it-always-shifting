@@ -4,10 +4,20 @@
   "version": "1.0",
   "manifest_version": 3,
   "background": {
-    "service_worker": "dist/service_worker/background.js"
+    "service_worker": "service_worker/background.js"
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content_scripts/analyze.js"
+      ]
+    }
+  ],
   "action": {
-    "default_popup": "dist/index.html",
+    "default_popup": "index.html",
     "default_icon": "why-is-it-always-shifting.png"
   }
 }
