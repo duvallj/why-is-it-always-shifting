@@ -12,6 +12,24 @@ const getDomPath = (el: Element): string | null => {
   return getDomPath(el.parentNode as Element) + " " + nodeName;
 };
 
+// From https://stackoverflow.com/a/30753870. Ignoring tabIndex=-1 and other disabled properties
+// because those can still be focused sometimes.
+const FOCUSABLE_ELEMENTS = [
+  "a[href]",
+  "area[href]",
+  "input",
+  "select",
+  "textarea",
+  "button",
+  "iframe",
+  "[tabindex]",
+  "[contentEditable=true]",
+];
+
+const FOCUSABLE_SELECTOR = FOCUSABLE_ELEMENTS.map(
+  (selector) => `* ${selector}`,
+).join(",");
+
 const analyzeShiftingElements = () => {
   const elements = document.querySelectorAll("*");
   const shiftingElements: Element[] = [];
@@ -22,7 +40,8 @@ const analyzeShiftingElements = () => {
     if (
       computedStyle.overflow === "hidden" &&
       element.clientHeight &&
-      element.scrollHeight > element.clientHeight
+      element.scrollHeight > element.clientHeight &&
+      element.matches(FOCUSABLE_SELECTOR)
     ) {
       shiftingElements.push(element);
     }
