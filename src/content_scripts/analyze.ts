@@ -16,21 +16,31 @@ function analyzeShiftingElements() {
   const elements = document.querySelectorAll("*");
   const shiftingElements: Element[] = [];
 
-  elements.forEach((element) => {
+  for (const element of elements) {
     const computedStyle = window.getComputedStyle(element);
 
     if (
       computedStyle.overflow === "hidden" &&
+      element.clientHeight &&
       element.scrollHeight > element.clientHeight
     ) {
       shiftingElements.push(element);
     }
-  });
+  }
+
+  const paths = new Map<string, Element[]>();
+
+  for (const shiftingElement of shiftingElements) {
+    const path = getDomPath(shiftingElement) ?? "(unknown element)";
+    const elementsWithPath = paths.get(path) ?? [];
+    elementsWithPath.push(shiftingElement);
+    paths.set(path, elementsWithPath);
+  }
 
   console.log(
-    `Found ${shiftingElements.length} potential shifting elements:`,
-    shiftingElements
-      .map((el) => getDomPath(el) ?? "(unknown element)")
+    `Found ${shiftingElements.length} potential shifting elements:\n`,
+    [...paths.entries()]
+      .map(([path, els]) => `"${path}": ${els.length}`)
       .join("\n"),
   );
 
