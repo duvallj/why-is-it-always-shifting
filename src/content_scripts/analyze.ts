@@ -8,8 +8,8 @@ const getDomPath = (el: Element): string | null => {
   if (el === document.body) return "body";
   if (el.id) nodeName += "#" + el.id;
   else if (el.classList.length) nodeName += "." + [...el.classList].join(".");
-  if (!el.parentNode) return null;
-  return getDomPath(el.parentNode as Element) + " " + nodeName;
+  if (!el.parentElement) return null;
+  return getDomPath(el.parentElement) + " " + nodeName;
 };
 
 // From https://stackoverflow.com/a/30753870. Ignoring tabIndex=-1 and other disabled properties
@@ -26,9 +26,9 @@ const FOCUSABLE_ELEMENTS = [
   "[contentEditable=true]",
 ];
 
-const FOCUSABLE_SELECTOR = FOCUSABLE_ELEMENTS.map(
-  (selector) => `* ${selector}`,
-).join(",");
+// NOTE(jack): For some reason, using .matches doesn't work, but checking the length of
+// .querySelectorAll does, so we'll use that instead.
+const FOCUSABLE_SELECTOR = FOCUSABLE_ELEMENTS.join(",");
 
 const analyzeShiftingElements = () => {
   const elements = document.querySelectorAll("*");
@@ -41,7 +41,7 @@ const analyzeShiftingElements = () => {
       computedStyle.overflow === "hidden" &&
       element.clientHeight &&
       element.scrollHeight > element.clientHeight &&
-      element.matches(FOCUSABLE_SELECTOR)
+      element.querySelectorAll(FOCUSABLE_SELECTOR).length
     ) {
       shiftingElements.push(element);
     }
