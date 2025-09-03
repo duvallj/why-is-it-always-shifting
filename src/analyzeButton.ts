@@ -1,4 +1,4 @@
-export function setupAnalyzeButton(element: HTMLButtonElement) {
+export const setupAnalyzeButton = (element: HTMLButtonElement) => {
   element.addEventListener("click", async () => {
     const [tab] = await chrome.tabs.query({
       active: true,
@@ -10,4 +10,4 @@ export function setupAnalyzeButton(element: HTMLButtonElement) {
     }
     await chrome.tabs.sendMessage(tab.id, { action: "analyze" });
   });
-}
+};

@@ -3,16 +3,16 @@
 
 console.log("Why Is It Always Shifting - Content Script Loaded");
 
-function getDomPath(el: Element): string | null {
+const getDomPath = (el: Element): string | null => {
   let nodeName = el.nodeName.toLowerCase();
   if (el === document.body) return "body";
   if (el.id) nodeName += "#" + el.id;
   else if (el.classList.length) nodeName += "." + [...el.classList].join(".");
   if (!el.parentNode) return null;
   return getDomPath(el.parentNode as Element) + " " + nodeName;
-}
+};
 
-function analyzeShiftingElements() {
+const analyzeShiftingElements = () => {
   const elements = document.querySelectorAll("*");
   const shiftingElements: Element[] = [];
 
@@ -51,7 +51,7 @@ function analyzeShiftingElements() {
   });
 
   return shiftingElements;
-}
+};
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", analyzeShiftingElements);
